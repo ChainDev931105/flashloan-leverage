@@ -6,10 +6,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import { SwapAdapter } from "./abstracts/SwapAdapter.sol";
 import { FlashloanAdapter } from "./abstracts/FlashloanAdapter.sol";
 import { LendingAdapter } from "./abstracts/LendingAdapter.sol";
+import "./library/utils.sol";
 
 abstract contract Leverage is Ownable, SwapAdapter, FlashloanAdapter, LendingAdapter {
     IERC20 immutable token;
-    address constant ETH = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
     address immutable TOKEN;
     uint256 releaseEthAmount;
 
