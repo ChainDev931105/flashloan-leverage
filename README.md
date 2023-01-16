@@ -1,13 +1,18 @@
-# Sample Hardhat Project
+# Flashloan Leverage
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Due to USDC address on Goerli is different in Uniswap and AAVE, I've decided to test with Mock contracts.
+Currently, smart contract and minimal test code is done. I will deploy and test them on Goerli later.
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+### Test
 ```
+yarn test
+```
+
+### Contracts
+```
+Factory: 
+contracts/v-simple/SimpleFactory.sol
+Leverage: 
+contracts/v-simple/SimpleLeverage.sol
+```
+
