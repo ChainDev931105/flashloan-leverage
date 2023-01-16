@@ -8,6 +8,8 @@ import { IWETH } from "../interfaces/IWETH.sol";
 import { LendingAdapter } from "../abstracts/LendingAdapter.sol";
 import "../library/utils.sol";
 
+import "hardhat/console.sol";
+
 contract AaveLending is LendingAdapter {
     mapping(address => uint256) private depositedAssets;
     mapping(address => uint256) private borrowedAssets;

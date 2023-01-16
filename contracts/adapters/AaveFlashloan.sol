@@ -30,5 +30,6 @@ abstract contract AaveFlashloan is FlashloanAdapter, FlashLoanSimpleReceiverBase
         bytes memory params
     ) public override returns (bool) {
         _flashloanCallback(asset, amount, premium, params);
+        return true;
     }
 }

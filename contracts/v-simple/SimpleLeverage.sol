@@ -6,6 +6,8 @@ import { AaveFlashloan } from "../adapters/AaveFlashloan.sol";
 import { AaveLending } from "../adapters/AaveLending.sol";
 import { UniswapSwap } from "../adapters/UniswapSwap.sol";
 
+import "hardhat/console.sol";
+
 contract SimpleLeverage is Leverage, AaveFlashloan, AaveLending, UniswapSwap {
     constructor(
         address _token,

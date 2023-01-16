@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, Signer } from "ethers";
 import { artifacts, ethers } from "hardhat";
 import { SimpleFactory } from "../typechain-types";
 export * from "./mocks";
@@ -15,13 +15,11 @@ export async function deploySimpleFactory(
   return simpleFactory;
 }
 
-export async function createSimpleLeverage(simpleFactoryAddress: string) {
+export async function createSimpleLeverage(simpleFactoryAddress: string, user: Signer) {
   const simpleFactory = await ethers.getContractAt("SimpleFactory", simpleFactoryAddress);
-  const tx = await simpleFactory.createLeverage();
+  const tx = await simpleFactory.connect(user).createLeverage();
   const event = (await tx.wait()).events?.find(event => event.event === "LeverageCreated");
   const simpleLeverageAddress = event?.args?.leverage;
-  if (simpleLeverageAddress) {
-    const simpleLeverage = await ethers.getContractAt("SimpleLeverage", simpleLeverageAddress);
-    return simpleLeverage;
-  }
+  const simpleLeverage = await ethers.getContractAt("SimpleLeverage", simpleLeverageAddress);
+  return simpleLeverage;
 }

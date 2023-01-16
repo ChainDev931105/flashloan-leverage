@@ -5,7 +5,7 @@ import {
   deploySimpleFactory,
   createSimpleLeverage,
   deployMockToken,
-  deployMockAAVEProvider,
+  deployMockAAVEPool,
   deployMockUniswapV3Pool,
   deployMockWETH,
 } from "../instructions";
@@ -17,7 +17,7 @@ async function main() {
   const usdc = await deployMockToken("USDC", "USDC", 18);
   ADDRESSES.USDC = usdc.address;
 
-  const aaveProvider = await deployMockAAVEProvider();
+  const aaveProvider = await deployMockAAVEPool();
   ADDRESSES.AAVEProvider = aaveProvider.address;
 
   const uniswapV3Pool = await deployMockUniswapV3Pool();

@@ -4,6 +4,8 @@ pragma solidity >=0.8.10;
 import { Factory } from "../Factory.sol";
 import { SimpleLeverage } from "./SimpleLeverage.sol";
 
+import "hardhat/console.sol";
+
 contract SimpleFactory is Factory {
     address private immutable token;
     address private immutable aaveProvider;

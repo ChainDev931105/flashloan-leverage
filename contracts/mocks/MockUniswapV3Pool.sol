@@ -4,6 +4,8 @@ pragma solidity >=0.8.10;
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import { IUniswapV3Pool } from "../interfaces/IUniswapV3Pool.sol";
 
+import "hardhat/console.sol";
+
 contract MockUniswapV3Pool is IUniswapV3Pool {
     address public immutable token0;
     address public immutable token1;

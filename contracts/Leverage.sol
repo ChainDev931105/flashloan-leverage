@@ -8,9 +8,16 @@ import { FlashloanAdapter } from "./abstracts/FlashloanAdapter.sol";
 import { LendingAdapter } from "./abstracts/LendingAdapter.sol";
 import "./library/utils.sol";
 
+import "hardhat/console.sol";
+
 abstract contract Leverage is Ownable, SwapAdapter, FlashloanAdapter, LendingAdapter {
     IERC20 immutable token;
     address immutable TOKEN;
+
+    event Leveraged(uint256 ethAmount, uint256 paybackAmount);
+    event Deleveraged(uint256 ethAmount, uint256 paybackAmount);
+
+    receive() external payable {}
 
     constructor(address _token, address _user) {
         token = IERC20(_token);
@@ -31,7 +38,7 @@ abstract contract Leverage is Ownable, SwapAdapter, FlashloanAdapter, LendingAda
         uint256 debtAmount = _debtAmount(TOKEN);
 
         // step 1. loan token from flashloanProvider
-        _flashloan(TOKEN, debtAmount, abi.encode(true, 0));
+        _flashloan(TOKEN, debtAmount, abi.encode(false, 0));
     }
 
     function _flashloanCallback(address asset, uint256 amount, uint256 premium, bytes memory params) internal override {
@@ -42,7 +49,7 @@ abstract contract Leverage is Ownable, SwapAdapter, FlashloanAdapter, LendingAda
             // step 3. swap from token to eth on exchange
             (int256 amount0, ) = _swap(amount, 2);
 
-            uint256 swappedEthAmount = uint256(amount0);
+            uint256 swappedEthAmount = uint256(-amount0);
             uint256 totalEth = swappedEthAmount + depositedEth;
 
             // step 4. deposit entire eth to lendingPool
@@ -53,6 +60,8 @@ abstract contract Leverage is Ownable, SwapAdapter, FlashloanAdapter, LendingAda
 
             // step 6. payback token to flashloanProvider
             _payback(TOKEN, paybackAmount);
+
+            emit Leveraged(totalEth, paybackAmount);
         } else {
             // step 2. repay to lendingPool
             _repay(TOKEN, amount);
@@ -63,17 +72,20 @@ abstract contract Leverage is Ownable, SwapAdapter, FlashloanAdapter, LendingAda
             _withdraw(ETH, totalEthAmount);
 
             // step 4. swap eth to token on exchange
-            (int256 amount0, int256 amount1) = _swap(paybackAmount, 0);
-            require(uint256(amount1) == paybackAmount, "Swap not completed");
-            int256 remainEth = int256(totalEthAmount) + amount0;
+            (int256 amount0, int256 amount1) = _swap(paybackAmount, 1);
+            require(uint256(-amount1) == paybackAmount, "Swap not completed");
+            int256 remainEth = int256(totalEthAmount) - amount0;
             require(remainEth >= 0, "Eth amount is negative");
 
+            console.log(address(this).balance, uint256(remainEth));
             // step 5. release Eth for user to withdraw
-            (bool success, ) = payable(msg.sender).call{ value: uint256(remainEth) }("");
+            (bool success, ) = payable(owner()).call{ value: uint256(remainEth) }("");
             require(success, "Eth sending failed");
 
             // step 6. payback token to flashloanProvider
             _payback(TOKEN, paybackAmount);
+
+            emit Deleveraged(totalEthAmount, paybackAmount);
         }
     }
 }
