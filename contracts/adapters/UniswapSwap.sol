@@ -2,7 +2,7 @@
 pragma solidity >=0.8.10;
 
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
+import { IUniswapV3Pool } from "../interfaces/IUniswapV3Pool.sol";
 import { IWETH } from "../interfaces/IWETH.sol";
 import { SwapAdapter } from "../abstracts/SwapAdapter.sol";
 

@@ -6,7 +6,7 @@ import { AaveFlashloan } from "../adapters/AaveFlashloan.sol";
 import { AaveLending } from "../adapters/AaveLending.sol";
 import { UniswapSwap } from "../adapters/UniswapSwap.sol";
 
-contract SampleLeverage is Leverage, AaveFlashloan, AaveLending, UniswapSwap {
+contract SimpleLeverage is Leverage, AaveFlashloan, AaveLending, UniswapSwap {
     constructor(
         address _token,
         address _user,

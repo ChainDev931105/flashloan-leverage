@@ -2,9 +2,9 @@
 pragma solidity >=0.8.10;
 
 import { Factory } from "../Factory.sol";
-import { SampleLeverage } from "./SampleLeverage.sol";
+import { SimpleLeverage } from "./SimpleLeverage.sol";
 
-contract SampleFactory is Factory {
+contract SimpleFactory is Factory {
     address private immutable token;
     address private immutable aaveProvider;
     address private immutable uniswapV3Pool;
@@ -18,7 +18,7 @@ contract SampleFactory is Factory {
     }
 
     function createLeverage() external override {
-        SampleLeverage leverage = new SampleLeverage(token, msg.sender, aaveProvider, uniswapV3Pool, aaveWETH);
+        SimpleLeverage leverage = new SimpleLeverage(token, msg.sender, aaveProvider, uniswapV3Pool, aaveWETH);
         emit LeverageCreated(msg.sender, address(leverage));
     }
 }

@@ -11,7 +11,6 @@ import "./library/utils.sol";
 abstract contract Leverage is Ownable, SwapAdapter, FlashloanAdapter, LendingAdapter {
     IERC20 immutable token;
     address immutable TOKEN;
-    uint256 releaseEthAmount;
 
     constructor(address _token, address _user) {
         token = IERC20(_token);
@@ -33,13 +32,6 @@ abstract contract Leverage is Ownable, SwapAdapter, FlashloanAdapter, LendingAda
 
         // step 1. loan token from flashloanProvider
         _flashloan(TOKEN, debtAmount, abi.encode(true, 0));
-    }
-
-    function withdrawEth() external onlyOwner {
-        uint256 amount = releaseEthAmount;
-        releaseEthAmount = 0;
-        (bool success, ) = payable(msg.sender).call{ value: amount }("");
-        require(success);
     }
 
     function _flashloanCallback(address asset, uint256 amount, uint256 premium, bytes memory params) internal override {
@@ -77,7 +69,8 @@ abstract contract Leverage is Ownable, SwapAdapter, FlashloanAdapter, LendingAda
             require(remainEth >= 0, "Eth amount is negative");
 
             // step 5. release Eth for user to withdraw
-            releaseEthAmount += uint256(remainEth);
+            (bool success, ) = payable(msg.sender).call{ value: uint256(remainEth) }("");
+            require(success, "Eth sending failed");
 
             // step 6. payback token to flashloanProvider
             _payback(TOKEN, paybackAmount);
