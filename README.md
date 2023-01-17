@@ -35,3 +35,9 @@ contracts/v-simple/SimpleLeverage.sol
 |MockAAVEPool|0x4859da93158511fB8A645C9a4a8D932e14F0FD73|
 |AaveProvider|0xA3Dbf03F6662747a7cd6D051fe2c614acEa7C90d|
 |MockUniswapV3Pool|0x26fD03E9cC04162837Bc120608636436802b871D|
+
+### Simulated Transactions
+Leverage:
+https://goerli.etherscan.io/tx/0x97ea8f075eaf95b45f7e6cbdf2317e6c75fad08ef21710a67b2ec0c75ceb039b
+Deleverage:
+https://goerli.etherscan.io/tx/0x2dc3651b7431d32aef8564606243318b5d503d7aaf365fb3111c3ca8366222ff
