@@ -1,5 +1,12 @@
 # Flashloan Leverage
 
+## Description
+
+[Here](https://polynomial.slite.page/p/W1xY8-yWCQwbE3/Flashloan-Leverage) is the description
+![Diagram](./diagram.png)
+
+## Assignment
+
 Due to USDC address on Goerli is different in Uniswap and AAVE, I've decided to test with Mock contracts.
 Currently, smart contract and minimal test code is done. I will deploy and test them on Goerli later.
 
